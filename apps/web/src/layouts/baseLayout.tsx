@@ -1,16 +1,16 @@
 import { For, Match, Suspense, Switch, useContext } from "solid-js";
 import { Flex } from "../components/ui/flex";
-import { AuthContext } from "../utils/contexts/auth";
-import { RevoltClient } from "../utils/client";
+import { AuthContext } from "~/lib/contexts/auth";
+import { RevoltClient } from "~/lib/client";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { TbHome, TbInfoCircle, TbMessage, TbSettings } from "solid-icons/tb";
 import { Button } from "../components/ui/button";
 import { A, useLocation, useNavigate } from "@solidjs/router";
 import { Separator } from "~/components/ui/separator";
-import { ServerContext } from "~/utils/contexts/server";
+import { ServerContext } from "~/lib/contexts/server";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import loadingFallback from "~/components/fallback/loadingFallback";
-import { SettingsContext } from "~/utils/contexts/settings";
+import { SettingsContext } from "~/lib/contexts/settings";
 
 export default function baseLayout(props: any) {
   const authContext = useContext(AuthContext);

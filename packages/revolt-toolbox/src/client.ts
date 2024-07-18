@@ -63,8 +63,16 @@ export default class Client {
    */
   async getIntent(): Promise<any> {
     if (this.useUpryzing) {
+      try {
+        const res = fetch(`${this.url}/features`);
+        if ((await res).status === 404)
+          throw "This instance does not run Upryzing.";
+      } catch (error) {
+        console.error("ERROR:", error)
+      }
+      
       // TODO: Get intents from Upryzing's API
-    } else throw new Error("Upryzing is not enabled for this client.");
+    } else throw new Error("Upryzing features are not enabled for this client.");
   }
 
   /**

@@ -7,18 +7,18 @@ import {
   createLocalStorageManager,
 } from "@kobalte/core";
 import { Route, Router } from "@solidjs/router";
-import { AuthProvider } from "./utils/contexts/auth";
+import { AuthProvider } from "./lib/contexts/auth";
 import baseLayout from "./layouts/baseLayout";
 import serverLayout from "./layouts/serverLayout";
 import HomePage from "./routes/home";
 import LoginPage from "./routes/login";
 import "./index.css";
 import serverPage from "./routes/server";
-import { ServerProvider } from "./utils/contexts/server";
-import { ChannelProvider } from "./utils/contexts/channel";
+import { ServerProvider } from "./lib/contexts/server";
+import { ChannelProvider } from "./lib/contexts/channel";
 import NotFound from "./routes/notFound";
 import settingsPage from "./routes/settings";
-import { SettingsProvider } from "./utils/contexts/settings";
+import { SettingsProvider } from "./lib/contexts/settings";
 import dmsPage from "./routes/dms";
 import { Toaster } from "./components/ui/toast";
 

@@ -4,10 +4,10 @@ import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
 import {AspectRatio} from "~/components/ui/aspect-ratio";
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
 import {Flex} from "~/components/ui/flex";
-import {ChannelContext} from "~/utils/contexts/channel";
-import {ServerContext} from "~/utils/contexts/server";
+import {ChannelContext} from "~/lib/contexts/channel";
+import {ServerContext} from "~/lib/contexts/server";
 import {Card, CardHeader, CardTitle} from "~/components/ui/card";
-import {messageSignal, setMessageSignal} from "~/utils/messaging";
+import {messageSignal, setMessageSignal} from "~/lib/messaging"
 import {showToast} from "~/components/ui/toast";
 
 export default function serverPage() {

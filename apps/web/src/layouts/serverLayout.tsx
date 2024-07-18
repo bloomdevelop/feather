@@ -10,8 +10,8 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import { Flex } from "~/components/ui/flex";
 import { Separator } from "~/components/ui/separator";
-import { ChannelContext } from "~/utils/contexts/channel";
-import { ServerContext } from "~/utils/contexts/server";
+import { ChannelContext } from "~/lib/contexts/channel";
+import { ServerContext } from "~/lib/contexts/server";
 import { Label } from "~/components/ui/label.tsx";
 import {
   Sheet,

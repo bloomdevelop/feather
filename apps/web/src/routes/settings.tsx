@@ -36,12 +36,12 @@ import {
   SwitchLabel,
   SwitchThumb,
 } from "~/components/ui/switch";
-import { SettingsContext } from "~/utils/contexts/settings";
+import { SettingsContext } from "~/lib/contexts/settings";
 import { createEffect, Show, useContext } from "solid-js";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert.tsx";
 import { Badge } from "~/components/ui/badge.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { RevoltClient } from "~/utils/client";
+import { RevoltClient } from "~/lib/client";
 import {
   TextField,
   TextFieldInput,

@@ -1,6 +1,6 @@
 import { createSignal, useContext, batch } from "solid-js";
-import { AuthContext } from "../utils/contexts/auth";
-import { RevoltClient } from "../utils/client";
+import { AuthContext } from "~/lib/contexts/auth";
+import { RevoltClient } from "~/lib/client";
 import {
   TextField,
   TextFieldInput,
