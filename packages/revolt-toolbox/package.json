@@ -1,0 +1,18 @@
+{
+  "name": "@repo/revolt-toolbox",
+  "type": "module",
+  "scripts": {
+    "build": "rimraf dist && tsc"
+  },
+  "exports": {
+    "./client": {
+      "types": "./src/client.ts",
+      "default": "./dist/client.js"
+    }
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "^5.5.3",
+    "rimraf": "^6.0.1"
+  }
+}
