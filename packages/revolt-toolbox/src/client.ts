@@ -1,8 +1,3 @@
-interface IClientOptions {
-  url: string;
-  useUpryzing: boolean;
-}
-
 /**
  * Represents a client for interacting with a server.
  *
@@ -11,7 +6,7 @@ interface IClientOptions {
  * @param options.useUpryzing - Whether to use the Upryzing service.
  */
 export default class Client {
-  private url: string;
+  private url: URL;
   private useUpryzing: boolean;
 
   /**
@@ -21,7 +16,7 @@ export default class Client {
    * @param options.url - The URL of the server to connect to.
    * @param options.useUpryzing - Whether to use the Upryzing service.
    */
-  constructor(options: IClientOptions) {
+  constructor(options: { url: URL; useUpryzing: boolean }) {
     this.url = options.url;
     this.useUpryzing = options.useUpryzing;
   }
@@ -50,9 +45,8 @@ export default class Client {
    * @returns The API root response as JSON.
    */
   async getAPIRoot(): Promise<any> {
-    fetch(this.url).then((res) => {
-      return res.json();
-    });
+    const res = fetch(this.url)
+    return (await res).json();
   }
 
   /**
