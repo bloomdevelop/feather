@@ -69,7 +69,6 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 
-import Client from "@repo/revolt-toolbox/client";
 import { showToast } from "~/components/ui/toast";
 
 export default function settingsPage() {
@@ -78,16 +77,6 @@ export default function settingsPage() {
   createEffect(() => {
     console.log(settingsContext?.settings.experiments.get("ai"));
   });
-
-  // EXPERIMENTAL: Custom Client from scratch. It's is designed for this client, may or may not work for other clients.
-  const CustomClient = new Client({
-    url: new URL("https://api.revolt.chat/"),
-    useUpryzing: false,
-  });
-
-  CustomClient.getAPIRoot().then((res) => {
-    console.log(res);
-  })
 
   return (
     <Flex
@@ -411,22 +400,6 @@ export default function settingsPage() {
               <TooltipContent>Send</TooltipContent>
             </Tooltip>
           </TextField>
-          <Separator />
-          <h2 class="font-bold text-xl">Custom Revolt Library</h2>
-          <Button
-            onClick={async () => {
-               CustomClient.getAPIRoot().then(async (res) => {
-                showToast({
-                  variant: "default",
-                  title: "Custom Client",
-                  description: res,
-                });
-              });
-              
-            }}
-          >
-            Send Request
-          </Button>
         </TabsContent>
         <TabsContent class="flex flex-col gap-4" value={"about"}>
           <h1 class="text-4xl font-bold">Feather</h1>

@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@repo/revolt-toolbox": "workspace:*",
+    "@repo/revolt.js": "workspace:*",
     "@corvu/drawer": "^0.2.2",
     "@corvu/resizable": "^0.2.3",
     "@kobalte/core": "^0.13.3",
