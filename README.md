@@ -1,6 +1,6 @@
 # Feather
 
-A modern, fast, and beautiful client for revolt.chat.
+A modern, fast, and sleek client for revolt.chat.
 
 > Powered by [Turborepo](https://turbo.build/)
 
