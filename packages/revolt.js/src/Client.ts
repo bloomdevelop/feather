@@ -286,6 +286,13 @@ export class Client extends EventEmitter<Events> {
   }
 
   /**
+   * Current session token
+   */
+  get sessionToken() {
+    return typeof this.#session === "string" ? undefined : this.#session?.token;
+  }
+
+  /**
    * Connect to Revolt
    */
   connect() {

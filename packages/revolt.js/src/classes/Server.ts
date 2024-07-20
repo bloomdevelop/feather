@@ -643,8 +643,13 @@ export class Server {
    */
   async fetchMembers() {
     const data = (await this.#collection.client.api.get(
-      // @ts-expect-error TODO weird typing issue
-      `/servers/${this.id as ""}/members`
+      `/servers/${this.id as ""}/members`,
+      {},
+      {
+        headers: {
+          "X-Session-Token": `${this.#collection.client.sessionToken}`,
+        },
+      }
     )) as AllMemberResponse;
 
     return batch(() => ({
