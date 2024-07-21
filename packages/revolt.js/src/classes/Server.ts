@@ -412,6 +412,7 @@ export class Server {
 
         this.#collection.delete(this.id);
       }
+      // eslint-disable-next-line spellcheck/spell-checker
       // TODO: delete members, emoji, etc
     });
   }
