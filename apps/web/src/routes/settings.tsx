@@ -69,8 +69,6 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 
-import { showToast } from "~/components/ui/toast";
-
 export default function settingsPage() {
   const { setColorMode, colorMode } = useColorMode();
   const settingsContext = useContext(SettingsContext);
@@ -400,6 +398,9 @@ export default function settingsPage() {
               <TooltipContent>Send</TooltipContent>
             </Tooltip>
           </TextField>
+          <Separator />
+          <h2 class="font-bold text-xl">Revolt.js</h2>
+          <p>Session Token: {RevoltClient.sessionToken || "No Session Token..."}</p>
         </TabsContent>
         <TabsContent class="flex flex-col gap-4" value={"about"}>
           <h1 class="text-4xl font-bold">Feather</h1>
