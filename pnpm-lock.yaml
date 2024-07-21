@@ -29,9 +29,6 @@ importers:
       '@kobalte/core':
         specifier: ^0.13.3
         version: 0.13.3(solid-js@1.8.18)
-      '@repo/revolt-toolbox':
-        specifier: workspace:*
-        version: link:../../packages/revolt-toolbox
       '@repo/revolt.js':
         specifier: workspace:*
         version: link:../../packages/revolt.js
@@ -120,18 +117,6 @@ importers:
       tailwindcss:
         specifier: ^3.4.6
         version: 3.4.6(ts-node@10.9.1(@types/node@20.14.11)(typescript@5.5.3))
-      typescript:
-        specifier: ^5.5.3
-        version: 5.5.3
-
-  packages/revolt-toolbox:
-    devDependencies:
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      rimraf:
-        specifier: ^6.0.1
-        version: 6.0.1
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
