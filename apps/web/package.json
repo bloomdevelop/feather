@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@repo/revolt.js": "workspace:*",
     "@corvu/drawer": "^0.2.2",
     "@corvu/resizable": "^0.2.3",
     "@kobalte/core": "^0.13.3",
+    "@repo/revolt.js": "workspace:*",
     "@solidjs/router": "^0.14.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -20,17 +20,19 @@
     "revolt.js": "^7.0.3",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.18",
+    "solidjs-use": "^2.3.0",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "virtua": "^0.33.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.11",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
+    "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.5.3",
     "vite": "^5.3.4",
-    "vite-plugin-solid": "^2.10.2",
-    "rimraf": "^6.0.1"
+    "vite-plugin-solid": "^2.10.2"
   }
 }

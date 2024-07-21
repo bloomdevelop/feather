@@ -26,22 +26,22 @@ import {
   AvatarImage,
 } from "~/components/ui/avatar.tsx";
 import { showToast } from "~/components/ui/toast.tsx";
+import { RevoltClient } from "~/lib/client";
 
 export default function serverLayout(props: any) {
   const { server } = useContext(ServerContext);
   const channelContext = useContext(ChannelContext);
 
-  const [membersList] = createResource(() => {
+  const [membersList] = createResource(async () => {
     return server()
-      ?.fetchMembers()
-      .catch((e) =>
+      ?.fetchMembers(true)
+      .catch((e) => {
         showToast({
-          title: "Couldn't fecth members list",
-          variant: "error",
+          title: "Error",
           description: e.message,
-        })
-      );
-    // Awaiting for Revolt team to respond, but Revolt API server is so dead 🥀
+          variant: "error",
+        });
+      });
   });
 
   return (
@@ -78,33 +78,42 @@ export default function serverLayout(props: any) {
                   <SheetHeader>
                     <SheetTitle>Members List </SheetTitle>
                   </SheetHeader>
-                  <Show
-                    when={membersList()?.members}
-                    fallback={
-                      <div class="flex w-full h-full items-center justify-center">
-                        <h1 class="text-xl font-bold">Unable to fetch members...</h1>
-                      </div>
-                    }
-                  >
-                    <div class="py-4">
+                  <div class="py-4 overflow-x-scroll">
+                    <Show
+                      when={membersList()?.members}
+                      fallback={
+                        <div class="flex w-full h-full items-center justify-center">
+                          <h1 class="text-xl font-bold">
+                            Unable to fetch members...
+                          </h1>
+                        </div>
+                      }
+                    >
                       <For each={membersList()?.members}>
-                        {(member) => (
-                          <Flex>
+                        {(item) => (
+                          <Flex
+                            justifyContent="start"
+                            alignItems="center"
+                            class="gap-2"
+                          >
                             <Avatar>
-                              <AvatarImage src={member.avatarURL} />
+                              <AvatarImage src={item.avatarURL} />
                               <AvatarFallback>
-                                {member.user?.username.substring(0, 2)}
+                                {item.user?.username.substring(0, 2)}
                               </AvatarFallback>
                             </Avatar>
-                            <div class="flex flex-col gap-2">
-                              <p>{member.nickname}</p>
-                              <p>@{member.user?.username}</p>
+                            <div class="flex flex-col">
+                              <p>{item.user?.displayName}</p>
+                              <p>
+                                @{item.user?.username}#
+                                {item.user?.discriminator}
+                              </p>
                             </div>
                           </Flex>
                         )}
                       </For>
-                    </div>
-                  </Show>
+                    </Show>
+                  </div>
                 </SheetContent>
               </Sheet>
             </Flex>
@@ -120,18 +129,19 @@ export default function serverLayout(props: any) {
                           {(channel) => (
                             <Button
                               onClick={() => {
-                                channelContext.updateChannelBasedOnId(
-                                  channel.id
+                                RevoltClient.api.get(
+                                  "-/channels/{target}/messages",
+                                  {
+                                    limit: 100,
+                                    include_users: true,
+                                    after: channel.lastMessage?.id,
+                                  },
+                                  {
+                                    headers: {
+                                      "X-Session-Token": `${RevoltClient.sessionToken}`,
+                                    },
+                                  }
                                 );
-                                // RevoltClient.api.get("-/channels/{target}/messages", {
-                                //   limit: 100,
-                                //   include_users: true,
-                                //   after: channel.lastMessage?.id
-                                // }, {
-                                //   headers: {
-                                //     "X-Session-Token": `${RevoltClient.sessions.get(`${RevoltClient.sessionId}`).}`
-                                //   }
-                                // });
                               }}
                               class="justify-start w-full gap-2"
                               variant={

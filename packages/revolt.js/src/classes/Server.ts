@@ -641,10 +641,10 @@ export class Server {
    * Fetch a server's members
    * @returns List of the server's members and their user objects
    */
-  async fetchMembers() {
+  async fetchMembers(exclude_offline?: boolean) {
     const data = (await this.#collection.client.api.get(
       `/servers/${this.id as ""}/members`,
-      {},
+      {exclude_offline: exclude_offline},
       {
         headers: {
           "X-Session-Token": `${this.#collection.client.sessionToken}`,

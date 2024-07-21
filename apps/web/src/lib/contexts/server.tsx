@@ -1,4 +1,4 @@
-import { Server } from "revolt.js";
+import { Server } from "@repo/revolt.js";
 import { Accessor, createContext, createMemo, createSignal } from "solid-js";
 import { RevoltClient } from "../client";
 
