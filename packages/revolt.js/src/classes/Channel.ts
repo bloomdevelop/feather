@@ -533,7 +533,12 @@ export class Channel {
   ) {
     const messages = (await this.#collection.client.api.get(
       `/channels/${this.id as ""}/messages`,
-      { ...params }
+      { ...params },
+      {
+        headers: {
+          "X-Session-Token": `${this.#collection.client.sessionToken}`
+        }
+      }
     )) as ApiMessage[];
 
     return messages.map((message) =>
