@@ -1,5 +1,5 @@
 /* @refresh reload */
-import { render, Suspense } from "solid-js/web";
+import { render } from "solid-js/web";
 
 import {
   ColorModeProvider,
@@ -33,7 +33,6 @@ render(
         <AuthProvider>
           <ColorModeScript storageType={storageManager.type} />
           <ColorModeProvider storageManager={storageManager}>
-            <Suspense>
               <ServerProvider>
                 <ChannelProvider>
                   <Router>
@@ -51,7 +50,6 @@ render(
                 </ChannelProvider>
               </ServerProvider>
               <Toaster />
-            </Suspense>
           </ColorModeProvider>
         </AuthProvider>
       </SettingsProvider>

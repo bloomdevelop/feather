@@ -1,5 +1,20 @@
-import { TbAlertCircle, TbUsersGroup } from "solid-icons/tb";
-import { createResource, For, Match, Show, Switch, useContext } from "solid-js";
+import {
+  TbAlertCircle,
+  TbDeviceSpeaker,
+  TbMessage2,
+  TbUsersGroup,
+} from "solid-icons/tb";
+import {
+  createEffect,
+  createResource,
+  For,
+  Match,
+  on,
+  Show,
+  Suspense,
+  Switch,
+  useContext,
+} from "solid-js";
 import {
   Accordion,
   AccordionContent,
@@ -13,159 +28,195 @@ import { Separator } from "~/components/ui/separator";
 import { ChannelContext } from "~/lib/contexts/channel";
 import { ServerContext } from "~/lib/contexts/server";
 import { Label } from "~/components/ui/label.tsx";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/components/ui/sheet.tsx";
+import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet.tsx";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "~/components/ui/avatar.tsx";
 import { showToast } from "~/components/ui/toast.tsx";
-import { RevoltClient } from "~/lib/client";
 
 export default function serverLayout(props: any) {
   const { server } = useContext(ServerContext);
-  const channelContext = useContext(ChannelContext);
+  const { id, setId } = useContext(ChannelContext);
 
-  const [membersList] = createResource(async () => {
-    return server()
-      ?.fetchMembers(true)
-      .catch((e) => {
-        showToast({
-          title: "Error",
-          description: e.message,
-          variant: "error",
+  const [membersList, { refetch: refreshMembers }] = createResource(
+    async () => {
+      return server()
+        ?.fetchMembers(true)
+        .catch((e) => {
+          showToast({
+            title: "Error",
+            description: e.message,
+            variant: "error",
+          });
         });
-      });
-  });
+    }
+  );
+
+  createEffect(
+    on(server, () => {
+      refreshMembers();
+    })
+  );
 
   return (
-    <Flex
-      justifyContent="start"
-      flexDirection="row"
-      class="w-full h-full gap-2"
+    <Suspense
+      fallback={
+        <div class="w-full h-full flex justify-center items-center text-4xl font-bold">
+          <svg class="h-24 w-24 animate-spin" viewBox="0 0 100 100">
+            <circle
+              fill="none"
+              stroke-width="10"
+              class="stroke-muted"
+              cx="50"
+              cy="50"
+              r="40"
+            />
+            <circle
+              fill="none"
+              stroke-width="10"
+              class="stroke-muted-foreground"
+              stroke-dasharray="250"
+              stroke-dashoffset="210"
+              cx="50"
+              cy="50"
+              r="40"
+            />
+          </svg>
+        </div>
+      }
     >
       <Flex
-        class="max-w-72 w-full h-full gap-2 py-2 overflow-auto"
-        flexDirection="col"
         justifyContent="start"
-        alignItems="start"
+        flexDirection="row"
+        class="w-full h-full"
       >
-        <Switch
-          fallback={
-            <Alert>
-              <TbAlertCircle />
-              <AlertTitle>No Channels</AlertTitle>
-              <AlertDescription>
-                This server has no channels...
-              </AlertDescription>
-            </Alert>
-          }
+        <Flex
+          class="max-w-72 w-full h-full gap-2 p-2 overflow-auto"
+          flexDirection="col"
+          justifyContent="start"
+          alignItems="start"
         >
-          <Match when={server()?.channels}>
-            <Flex class={"gap-2"}>
-              <Label>{membersList()?.members?.length || 0} Members</Label>
-              <Sheet>
-                <SheetTrigger as={Button<"button">} variant="outline">
-                  <TbUsersGroup />
-                </SheetTrigger>
-                <SheetContent position={"right"}>
-                  <SheetHeader>
-                    <SheetTitle>Members List </SheetTitle>
-                  </SheetHeader>
-                  <div class="py-4 overflow-x-scroll">
-                    <Show
-                      when={membersList()?.members}
-                      fallback={
-                        <div class="flex w-full h-full items-center justify-center">
-                          <h1 class="text-xl font-bold">
-                            Unable to fetch members...
-                          </h1>
-                        </div>
-                      }
-                    >
-                      <For each={membersList()?.members}>
-                        {(item) => (
-                          <Flex
-                            justifyContent="start"
-                            alignItems="center"
-                            class="gap-2"
-                          >
-                            <Avatar>
-                              <AvatarImage src={item.avatarURL} />
-                              <AvatarFallback>
-                                {item.user?.username.substring(0, 2)}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div class="flex flex-col">
-                              <p>{item.user?.displayName}</p>
-                              <p>
-                                @{item.user?.username}#
-                                {item.user?.discriminator}
-                              </p>
-                            </div>
-                          </Flex>
-                        )}
-                      </For>
-                    </Show>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </Flex>
-            <Separator />
-            <Accordion multiple collapsible class="w-full">
-              <For each={server()?.orderedChannels}>
-                {(category) => (
-                  <AccordionItem value={`${category.id}`}>
-                    <AccordionTrigger>{category.title}</AccordionTrigger>
-                    <AccordionContent>
-                      <Flex class="gap-2" flexDirection="col">
-                        <For each={category.channels}>
-                          {(channel) => (
-                            <Button
-                              onClick={() => {
-                                RevoltClient.api.get(
-                                  "-/channels/{target}/messages",
-                                  {
-                                    limit: 100,
-                                    include_users: true,
-                                    after: channel.lastMessage?.id,
-                                  },
-                                  {
-                                    headers: {
-                                      "X-Session-Token": `${RevoltClient.sessionToken}`,
-                                    },
-                                  }
-                                );
-                              }}
-                              class="justify-start w-full gap-2"
-                              variant={
-                                channelContext.id() === channel.id
-                                  ? "default"
-                                  : "outline"
-                              }
+          <Switch
+            fallback={
+              <Alert>
+                <TbAlertCircle />
+                <AlertTitle>No Channels</AlertTitle>
+                <AlertDescription>
+                  This server has no channels...
+                </AlertDescription>
+              </Alert>
+            }
+          >
+            <Match when={server()?.channels}>
+              <Flex class={"gap-2"}>
+                <Label>{membersList()?.members?.length || 0} Members</Label>
+                <Sheet>
+                  <SheetTrigger as={Button<"button">} variant="outline">
+                    <TbUsersGroup />
+                  </SheetTrigger>
+                  <SheetContent
+                    title="Members List"
+                    position={"right"}
+                    class="!p-0 overflow-x-auto"
+                  >
+                    <div class="p-4">
+                      <Show
+                        when={membersList()?.members}
+                        fallback={
+                          <div class="flex w-full h-full items-center justify-center">
+                            <h1 class="text-xl font-bold">
+                              Unable to fetch members...
+                            </h1>
+                          </div>
+                        }
+                      >
+                        <For each={membersList()?.members}>
+                          {(item) => (
+                            <Flex
+                              justifyContent="start"
+                              alignItems="center"
+                              class="gap-2"
                             >
-                              {channel.name}
-                            </Button>
+                              <Avatar>
+                                <AvatarImage src={item.avatarURL} />
+                                <AvatarFallback>
+                                  {item.user?.username.substring(0, 2)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div class="flex flex-col">
+                                <p>{item.user?.displayName}</p>
+                                <p>
+                                  @{item.user?.username}#
+                                  {item.user?.discriminator}
+                                </p>
+                              </div>
+                            </Flex>
                           )}
                         </For>
-                      </Flex>
-                    </AccordionContent>
-                  </AccordionItem>
-                )}
-              </For>
-            </Accordion>
-          </Match>
-        </Switch>
+                      </Show>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </Flex>
+              <Separator />
+              <Accordion multiple collapsible class="w-full">
+                <For each={server()?.orderedChannels}>
+                  {(category) => (
+                    <AccordionItem value={`${category.id}`}>
+                      <AccordionTrigger>{category.title}</AccordionTrigger>
+                      <AccordionContent>
+                        <Flex class="gap-2" flexDirection="col">
+                          <For each={category.channels}>
+                            {(channel) => (
+                              <Button
+                                onClick={async () => {
+                                  setId(channel.id);
+                                }}
+                                class="justify-start items-center w-full gap-2"
+                                variant={
+                                  id() === channel.id ? "default" : "outline"
+                                }
+                              >
+                                <Show when={channel.iconURL}>
+                                  <img
+                                    width={24}
+                                    height={24}
+                                    src={channel.iconURL}
+                                    alt={channel.name}
+                                  />
+                                </Show>
+                                <Show when={channel.iconURL == undefined}>
+                                  <Switch>
+                                    <Match
+                                      when={channel.type === "TextChannel"}
+                                    >
+                                      <TbMessage2 size={24} />
+                                    </Match>
+                                    <Match
+                                      when={channel.type === "VoiceChannel"}
+                                    >
+                                      <TbDeviceSpeaker size={24} />
+                                    </Match>
+                                  </Switch>
+                                </Show>
+                                {channel.name}
+                              </Button>
+                            )}
+                          </For>
+                        </Flex>
+                      </AccordionContent>
+                    </AccordionItem>
+                  )}
+                </For>
+              </Accordion>
+            </Match>
+          </Switch>
+        </Flex>
+        <Separator orientation="vertical" />
+        <div class="w-full h-full">{props.children}</div>
       </Flex>
-
-      <Separator orientation="vertical" />
-      <div class="w-full h-full p-2">{props.children}</div>
-    </Flex>
+    </Suspense>
   );
 }

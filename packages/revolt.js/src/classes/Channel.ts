@@ -563,7 +563,11 @@ export class Channel {
   ) {
     const data = (await this.#collection.client.api.get(
       `/channels/${this.id as ""}/messages`,
-      { ...params, include_users: true }
+      { ...params, include_users: true },
+      {
+        headers: {
+        "X-Session-Token": `${this.#collection.client.sessionToken}`
+      }}
     )) as { messages: ApiMessage[]; users: ApiUser[]; members?: ApiMember[] };
 
     return batch(() => ({

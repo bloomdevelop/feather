@@ -26,7 +26,7 @@ export default function baseLayout(props: any) {
   return (
     <>
       <Flex
-        class="w-screen h-screen gap-2"
+        class="w-screen h-screen"
         justifyContent="start"
         flexDirection="row"
       >

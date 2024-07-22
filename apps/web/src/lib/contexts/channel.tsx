@@ -1,11 +1,21 @@
 import { Channel } from "@repo/revolt.js";
-import { Accessor, createContext, createSignal } from "solid-js";
+import {
+  Accessor,
+  createContext,
+  createEffect,
+  createSignal,
+  on,
+  Resource,
+} from "solid-js";
+import { RevoltClient } from "../client";
 
 interface IChannelContext {
   id: Accessor<string>;
   setId: (value: string) => void;
   channel: Accessor<Channel | undefined>;
   setChannel: (value: Channel | undefined) => void;
+  channelResource?: Resource<Channel | undefined>;
+  refreshChannel?: () => void;
 }
 
 const ChannelContext = createContext<IChannelContext>({
@@ -22,6 +32,14 @@ const ChannelContext = createContext<IChannelContext>({
 function ChannelProvider(props: any) {
   const [id, setId] = createSignal("");
   const [channel, setChannel] = createSignal<Channel | undefined>(undefined);
+
+  createEffect(
+    on(id, async () => {
+      const res = await RevoltClient.channels.fetch(id());
+      setChannel(res);
+    })
+  );
+
   return (
     <ChannelContext.Provider value={{ id, setId, channel, setChannel }}>
       {props.children}

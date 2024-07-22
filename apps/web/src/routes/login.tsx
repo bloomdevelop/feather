@@ -60,6 +60,7 @@ export default function LoginPage() {
       <Flex
         class="w-full h-full p-4"
         justifyContent="between"
+        alignItems="center"
         flexDirection="col"
       >
         <form
@@ -89,14 +90,17 @@ export default function LoginPage() {
               placeholder="Password"
             />
           </TextField>
-          <Button
-            disabled={authContext.isLogging()}
-            class="w-max"
-            type="submit"
-          >
-            Login
-          </Button>
+          <Flex justifyContent="start" alignItems="center" class="gap-4">
+            <Button
+              disabled={authContext.isLogging()}
+              class="w-max"
+              type="submit"
+            >
+              Login
+            </Button>
+          </Flex>
         </form>
+
         <Card>
           <CardHeader>
             <CardTitle>Why login to your email and password?</CardTitle>
@@ -105,10 +109,6 @@ export default function LoginPage() {
             <p>
               You need to login to your email and password to use this app,
               since this client replies with <code>revolt.js</code>.
-            </p>
-            <p>
-              Also if you don't want to login to your email and password, you
-              can use your auth token {"(not recommended)"}
             </p>
           </CardContent>
         </Card>

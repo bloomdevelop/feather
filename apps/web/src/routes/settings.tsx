@@ -53,13 +53,8 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+  Sheet, SheetContent,
+  SheetFooter, SheetTrigger
 } from "~/components/ui/sheet";
 import {
   Dialog,
@@ -358,11 +353,7 @@ export default function settingsPage() {
                     <TooltipContent>Summarize</TooltipContent>
                   </Tooltip>
                 </SheetTrigger>
-                <SheetContent position="right">
-                  <SheetHeader class="flex justify-between items-center">
-                    <SheetTitle>Summarize</SheetTitle>
-                    <SheetClose />
-                  </SheetHeader>
+                <SheetContent title="Summarize" position="right">
                   <div class="flex flex-col justify-between w-full h-full pb-6">
                     <Alert>
                       <TbAlertTriangle />
