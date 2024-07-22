@@ -3,11 +3,11 @@ title: Version 0.1.0
 description: First release of Feather client.
 ---
 
-## What's new
-
-:::tip[Alpha Version]
+:::caution[Alpha Version]
 This version is unstable and it's not complete, even some features are not implemented yet. So make sure to suggest or report bugs in the [GitHub repository](https://github.com/bloomdevelop/feather/issues).
 :::
+
+## What's new
 
 - This is the first release of Feather client but, also the initial work in a new monorepo.
 - Feather uses `solid-ui` for UI/UX while using Solid.js for framework.
