@@ -18,7 +18,6 @@ import {
 import { TbMessage2Share } from "solid-icons/tb";
 import { SolidMarkdown } from "solid-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-
 export function MessageProvider() {
   const { channel } = useContext(ChannelContext);
   const [messagesResource, { refetch: refreshMessages }] = createResource(

@@ -10,6 +10,10 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      sans: "Inter, sans-serif",
+      mono: 'JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -89,8 +93,8 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
         "accordion-up": "accordion-up 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-        "content-show": "content-show 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-        "content-hide": "content-hide 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+        "content-show": "content-show 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "content-hide": "content-hide 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
       },
     },
   },

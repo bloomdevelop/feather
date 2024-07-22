@@ -38,7 +38,7 @@ function ChannelProvider(props: any) {
       if (id()) {
         const res = await RevoltClient.channels.fetch(id());
         setChannel(res);
-      } else if (id() === "" ?? id() === undefined) setChannel(undefined);
+      } else if (id() === "") setChannel(undefined);
       else setChannel(undefined);
     })
   );

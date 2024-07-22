@@ -35,6 +35,8 @@ import {
   AvatarImage,
 } from "~/components/ui/avatar.tsx";
 import { showToast } from "~/components/ui/toast.tsx";
+import { Badge } from "~/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 
 export default function serverLayout(props: any) {
   const { server } = useContext(ServerContext);
@@ -87,11 +89,7 @@ export default function serverLayout(props: any) {
         </div>
       }
     >
-      <Flex
-        justifyContent="start"
-        flexDirection="row"
-        class="w-full h-full"
-      >
+      <Flex justifyContent="start" flexDirection="row" class="w-full h-full">
         <Flex
           class="max-w-72 w-full h-full gap-2 p-2 overflow-auto"
           flexDirection="col"
@@ -111,17 +109,28 @@ export default function serverLayout(props: any) {
           >
             <Match when={server()?.channels}>
               <Flex class={"gap-2"}>
-                <Label>{membersList()?.members?.length || 0} Members</Label>
+                <Label>
+                  <Badge variant={"outline"}>
+                    {membersList()?.members?.length || 0} Online members
+                  </Badge>
+                </Label>
                 <Sheet>
-                  <SheetTrigger as={Button<"button">} variant="outline">
-                    <TbUsersGroup />
+                  <SheetTrigger>
+                    <Tooltip>
+                      <TooltipTrigger as={Button<"button">} variant="outline">
+                        <TbUsersGroup />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Members List
+                      </TooltipContent>
+                    </Tooltip>
                   </SheetTrigger>
                   <SheetContent
                     title="Members List"
                     position={"right"}
-                    class="!p-0 overflow-x-auto"
+                    class="!p-0 overflow-x-hidden overflow-y-auto"
                   >
-                    <div class="p-4">
+                    <div class="flex flex-col gap-2 p-4">
                       <Show
                         when={membersList()?.members}
                         fallback={
@@ -137,7 +146,7 @@ export default function serverLayout(props: any) {
                             <Flex
                               justifyContent="start"
                               alignItems="center"
-                              class="gap-2"
+                              class="p-2 bg-background border-2 border-muted rounded-md gap-2 shadow-sm"
                             >
                               <Avatar>
                                 <AvatarImage src={item.avatarURL} />

@@ -146,7 +146,7 @@ export default function serverPage() {
             </Suspense>
           </div>
           <div class="z-10 sticky bottom-0 w-full flex flex-row gap-2 items-center bg-background border-t-2 border-t-muted p-4">
-            <ComposeComponent />
+            <ComposeComponent disabled={!channel()?.havePermission("SendMessage")} />
           </div>
         </div>
       </Show>

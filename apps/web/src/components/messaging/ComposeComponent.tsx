@@ -7,7 +7,7 @@ import {
   TbAlertTriangle,
   TbSend,
 } from "solid-icons/tb";
-import { createSignal, Show, useContext } from "solid-js";
+import { createSignal, Show, splitProps, useContext } from "solid-js";
 import { AlertTitle, AlertDescription, Alert } from "../ui/alert";
 import {
   DropdownMenuTrigger,
@@ -25,33 +25,44 @@ import { SettingsContext } from "~/lib/contexts/settings";
 import { ChannelContext } from "~/lib/contexts/channel";
 import { showToast } from "../ui/toast";
 
-export default function ComposeComponent() {
+export type ComposeComponentProps = {
+  disabled?: boolean;
+};
+
+export default function ComposeComponent(props: ComposeComponentProps) {
+  const [, rest] = splitProps(props, ["disabled"]);
   const [messageContent, setMessageContent] = createSignal("");
 
   const settingsContext = useContext(SettingsContext);
-  const { channel } = useContext(ChannelContext)
+  const { channel } = useContext(ChannelContext);
   return (
     <form
       class="w-full"
       onSubmit={(e) => {
         e.preventDefault(); // I forgot to prevent from doing this
         if (messageContent() !== "") {
-          channel()?.sendMessage(messageContent()).catch((err) => showToast({
-            variant: "error",
-            title: "Couldn't send a message!",
-            description: err.message
-          }));
-
+          channel()
+            ?.sendMessage(messageContent())
+            .catch((err) =>
+              showToast({
+                variant: "error",
+                title: "Couldn't send a message!",
+                description: err.message,
+              })
+            );
         }
         setMessageContent("");
-        
       }}
     >
-      <TextField class="w-full flex flex-row items-center gap-2">
+      <TextField {...rest} class="w-full flex flex-row items-center gap-2">
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger disabled={props.disabled}>
             <Tooltip>
-              <TooltipTrigger as={Button<"button">} variant="outline">
+              <TooltipTrigger
+                as={Button<"button">}
+                disabled={props.disabled}
+                variant="outline"
+              >
                 <TbFilePlus />
               </TooltipTrigger>
               <TooltipContent>Add Files</TooltipContent>
@@ -77,8 +88,13 @@ export default function ComposeComponent() {
           type="text"
           class="flex-grow"
           value={messageContent()}
+          disabled={props.disabled}
           onInput={(e) => setMessageContent(e.currentTarget.value)}
-          placeholder="Type an message"
+          placeholder={
+            (props.disabled &&
+              'This channel is read-only, expect people with "Send Message" permission') ||
+            "Type a message"
+          }
           autocomplete="none"
         />
 
@@ -94,6 +110,7 @@ export default function ComposeComponent() {
                   as={Button<"button">}
                   variant="outline"
                   disabled={
+                    props.disabled ||
                     settingsContext?.settings.experiments.get("aiAPIKey") === ""
                   }
                 >
@@ -132,7 +149,12 @@ export default function ComposeComponent() {
         </Show>
 
         <Tooltip>
-          <TooltipTrigger as={Button<"button">} type="submit" variant="outline">
+          <TooltipTrigger
+            disabled={props.disabled}
+            as={Button<"button">}
+            type="submit"
+            variant="outline"
+          >
             <TbSend />
           </TooltipTrigger>
           <TooltipContent>Send</TooltipContent>
