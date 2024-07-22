@@ -7,7 +7,7 @@ import {
   TbAlertTriangle,
   TbSend,
 } from "solid-icons/tb";
-import { Show, useContext } from "solid-js";
+import { createSignal, Show, useContext } from "solid-js";
 import { AlertTitle, AlertDescription, Alert } from "../ui/alert";
 import {
   DropdownMenuTrigger,
@@ -22,10 +22,31 @@ import { TextField, TextFieldInput } from "../ui/text-field";
 import { TooltipTrigger, TooltipContent, Tooltip } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { SettingsContext } from "~/lib/contexts/settings";
+import { ChannelContext } from "~/lib/contexts/channel";
+import { showToast } from "../ui/toast";
 
 export default function ComposeComponent() {
+  const [messageContent, setMessageContent] = createSignal("");
+
   const settingsContext = useContext(SettingsContext);
+  const { channel } = useContext(ChannelContext)
   return (
+    <form
+      class="w-full"
+      onSubmit={(e) => {
+        e.preventDefault(); // I forgot to prevent from doing this
+        if (messageContent() !== "") {
+          channel()?.sendMessage(messageContent()).catch((err) => showToast({
+            variant: "error",
+            title: "Couldn't send a message!",
+            description: err.message
+          }));
+
+        }
+        setMessageContent("");
+        
+      }}
+    >
       <TextField class="w-full flex flex-row items-center gap-2">
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -55,6 +76,8 @@ export default function ComposeComponent() {
         <TextFieldInput
           type="text"
           class="flex-grow"
+          value={messageContent()}
+          onInput={(e) => setMessageContent(e.currentTarget.value)}
           placeholder="Type an message"
           autocomplete="none"
         />
@@ -109,11 +132,12 @@ export default function ComposeComponent() {
         </Show>
 
         <Tooltip>
-          <TooltipTrigger as={Button<"button">} variant="outline">
+          <TooltipTrigger as={Button<"button">} type="submit" variant="outline">
             <TbSend />
           </TooltipTrigger>
           <TooltipContent>Send</TooltipContent>
         </Tooltip>
       </TextField>
+    </form>
   );
 }

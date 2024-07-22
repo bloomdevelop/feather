@@ -1,4 +1,9 @@
-import { For, Match, Suspense, Switch, useContext } from "solid-js";
+import {
+  For,
+  Match, Suspense,
+  Switch,
+  useContext
+} from "solid-js";
 import { Flex } from "../components/ui/flex";
 import { AuthContext } from "~/lib/contexts/auth";
 import { RevoltClient } from "~/lib/client";
@@ -11,10 +16,12 @@ import { ServerContext } from "~/lib/contexts/server";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import loadingFallback from "~/components/fallback/loadingFallback";
 import { SettingsContext } from "~/lib/contexts/settings";
+import { ChannelContext } from "~/lib/contexts/channel";
 
 export default function baseLayout(props: any) {
   const authContext = useContext(AuthContext);
   const { updateServerBasedOnId, id } = useContext(ServerContext);
+  const { setId } = useContext(ChannelContext);
   const settingsContext = useContext(SettingsContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,6 +30,7 @@ export default function baseLayout(props: any) {
   if (location.pathname === "/") {
     navigate("/home");
   }
+
   return (
     <>
       <Flex
@@ -99,6 +107,7 @@ export default function baseLayout(props: any) {
                         <Button
                           onClick={() => {
                             updateServerBasedOnId(server.id);
+                            setId("");
                             navigate(`/server/${server.id}`);
                           }}
                           class="justify-start w-full"

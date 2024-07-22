@@ -491,6 +491,7 @@ export class Channel {
       {
         headers: {
           "Idempotency-Key": idempotencyKey,
+          "X-Session-Token": `${this.#collection.client.sessionToken}`
         },
       }
     );

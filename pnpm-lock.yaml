@@ -56,6 +56,9 @@ importers:
       solid-markdown:
         specifier: ^2.0.13
         version: 2.0.13(solid-js@1.8.18)
+      solidjs-use:
+        specifier: ^2.3.0
+        version: 2.3.0
       tailwind-merge:
         specifier: ^2.4.0
         version: 2.4.0
@@ -1007,6 +1010,12 @@ packages:
     peerDependencies:
       solid-js: ^1.6.12
 
+  '@solidjs-use/shared@2.3.0':
+    resolution: {integrity: sha512-xuPNzZ9fwigkmYXTO+a8kaT45XQCPt6jVlyiDDYCD9NRZheRJOZWiUcVjYHzjececbWTctcY8NFdsXVyxARHKg==}
+
+  '@solidjs-use/solid-to-vue@2.3.0':
+    resolution: {integrity: sha512-I2onRwzdYl2eq20M3hcTkVIeYq4hNoBpHvRJB9yzoyXRDSyp7R2glIbvdBzpsXqnTvX7HJhB2KePfxYXFvyJxw==}
+
   '@solidjs/router@0.14.1':
     resolution: {integrity: sha512-GumQ4jbt5xDngLypAndC4EjapY/3DP0G8Az4YWEVQHdCtjHwB8IOm32eEBxE9lKpOffbtXV0r/0X0mofHJ1m5w==}
     peerDependencies:
@@ -1091,6 +1100,9 @@ packages:
 
   '@types/unist@3.0.2':
     resolution: {integrity: sha512-dqId9J8K/vGi5Zr7oo212BGii5m3q5Hxlkwy3WpYuKPklmBEvsbMYYyLxAQpSffdLl/gdW0XUpKWFvYmyoWCoQ==}
+
+  '@types/web-bluetooth@0.0.16':
+    resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
 
   '@types/ws@8.5.11':
     resolution: {integrity: sha512-4+q7P5h3SpJxaBft0Dzpbr6lmMaqh0Jr2tbhJZ/luAwvD7ohSCniYkwz/pLxuT2h0EOa6QADgJj1Ko+TzRfZ+w==}
@@ -3089,6 +3101,9 @@ packages:
     peerDependencies:
       solid-js: ^1.8
 
+  solidjs-use@2.3.0:
+    resolution: {integrity: sha512-ZyH2jiUSQU+5S5vd8zyvqz9X2ikhMjJhDeh/TjRzjLDJlZ1RuZaMxdM+jGsrJxo3X/xBW9kDpYNONXs6wYrQCQ==}
+
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
     engines: {node: '>=0.10.0'}
@@ -4530,6 +4545,12 @@ snapshots:
     dependencies:
       solid-js: 1.8.18
 
+  '@solidjs-use/shared@2.3.0':
+    dependencies:
+      '@solidjs-use/solid-to-vue': 2.3.0
+
+  '@solidjs-use/solid-to-vue@2.3.0': {}
+
   '@solidjs/router@0.14.1(solid-js@1.8.18)':
     dependencies:
       solid-js: 1.8.18
@@ -4632,6 +4653,8 @@ snapshots:
   '@types/unist@2.0.10': {}
 
   '@types/unist@3.0.2': {}
+
+  '@types/web-bluetooth@0.0.16': {}
 
   '@types/ws@8.5.11':
     dependencies:
@@ -7426,6 +7449,11 @@ snapshots:
     dependencies:
       '@corvu/utils': 0.3.2(solid-js@1.8.18)
       solid-js: 1.8.18
+
+  solidjs-use@2.3.0:
+    dependencies:
+      '@solidjs-use/shared': 2.3.0
+      '@types/web-bluetooth': 0.0.16
 
   source-map-js@1.2.0: {}
 

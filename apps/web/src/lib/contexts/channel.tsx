@@ -35,8 +35,11 @@ function ChannelProvider(props: any) {
 
   createEffect(
     on(id, async () => {
-      const res = await RevoltClient.channels.fetch(id());
-      setChannel(res);
+      if (id()) {
+        const res = await RevoltClient.channels.fetch(id());
+        setChannel(res);
+      } else if (id() === "" ?? id() === undefined) setChannel(undefined);
+      else setChannel(undefined);
     })
   );
 

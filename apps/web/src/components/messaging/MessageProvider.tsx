@@ -1,10 +1,9 @@
 import {
   createEffect,
-  createResource,
-  For,
+  createResource, For,
   on,
   Show,
-  useContext,
+  useContext
 } from "solid-js";
 import { ChannelContext } from "../../lib/contexts/channel";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -15,7 +14,6 @@ import {
   ContextMenuContent,
   ContextMenuTrigger,
   ContextMenuItem,
-
 } from "~/components/ui/context-menu";
 import { TbMessage2Share } from "solid-icons/tb";
 import { SolidMarkdown } from "solid-markdown";
@@ -25,8 +23,6 @@ export function MessageProvider() {
   const { channel } = useContext(ChannelContext);
   const [messagesResource, { refetch: refreshMessages }] = createResource(
     () => {
-      console.log(channel()?.id);
-      if (channel()?.id) {
         return channel()
           ?.fetchMessagesWithUsers({
             limit: 100,
@@ -38,11 +34,19 @@ export function MessageProvider() {
               description: err.message,
             })
           );
-      } else return;
     }
   );
 
-  createEffect(on(channel, () => refreshMessages()));
+  createEffect(
+    on(channel, () => {
+      refreshMessages();
+    })
+  );
+
+  createEffect(() => {
+    refreshMessages();
+  })
+
   return (
     <Show when={messagesResource()}>
       <Flex

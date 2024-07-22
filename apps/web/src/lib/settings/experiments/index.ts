@@ -2,14 +2,16 @@ import { createStore } from "solid-js/store";
 import { ISetting } from "../ISetting";
 
 export interface IExperiments {
-  ai: boolean,
-  aiAPIKey: string,
+  ai: boolean;
+  aiAPIKey: string;
+  reactions: boolean;
 }
 
 export class Experiments implements ISetting<IExperiments> {
   store = createStore<IExperiments>({
     ai: false,
     aiAPIKey: "",
+    reactions: false,
   });
 
   set(k: keyof IExperiments, v: IExperiments[typeof k]) {

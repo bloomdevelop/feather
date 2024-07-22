@@ -115,8 +115,35 @@ export default function serverPage() {
               </PopoverContent>
             </Popover>
           </div>
-          <div class="p-2">
-            <MessageProvider />
+          <div class="block p-2">
+            <Suspense
+              fallback={
+                <div class="w-full h-full flex justify-center items-center text-4xl font-bold">
+                  <svg class="h-24 w-24 animate-spin" viewBox="0 0 100 100">
+                    <circle
+                      fill="none"
+                      stroke-width="10"
+                      class="stroke-muted"
+                      cx="50"
+                      cy="50"
+                      r="40"
+                    />
+                    <circle
+                      fill="none"
+                      stroke-width="10"
+                      class="stroke-muted-foreground"
+                      stroke-dasharray="250"
+                      stroke-dashoffset="210"
+                      cx="50"
+                      cy="50"
+                      r="40"
+                    />
+                  </svg>
+                </div>
+              }
+            >
+              <MessageProvider />
+            </Suspense>
           </div>
           <div class="z-10 sticky bottom-0 w-full flex flex-row gap-2 items-center bg-background border-t-2 border-t-muted p-4">
             <ComposeComponent />
