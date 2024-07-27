@@ -1,8 +1,8 @@
 import {
   createEffect,
-  createResource, For,
-  on,
-  Show,
+  createSignal,
+  For,
+  on, Show,
   useContext
 } from "solid-js";
 import { ChannelContext } from "../../lib/contexts/channel";
@@ -18,23 +18,37 @@ import {
 import { TbMessage2Share } from "solid-icons/tb";
 import { SolidMarkdown } from "solid-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { useSubscription } from "@solidjs-use/rxjs";
+import { interval } from "rxjs";
+
 export function MessageProvider() {
   const { channel } = useContext(ChannelContext);
-  const [messagesResource, { refetch: refreshMessages }] = createResource(
-    () => {
-        return channel()
-          ?.fetchMessagesWithUsers({
-            limit: 100,
-          })
-          .catch((err) =>
-            showToast({
-              variant: "error",
-              title: "Error",
-              description: err.message,
-            })
-          );
+  const [prev, setPrev] = createSignal<any>()
+  const [messagesSignal, setMessageSignal] = createSignal<any>();
+
+  async function refreshMessages() {
+    const msg = await channel()
+      ?.fetchMessages({ limit: 100 })
+      .catch((err) =>
+        showToast({
+          variant: "error",
+          title: "Error",
+          description: err.message,
+        })
+      );
+    if (!prev()) {
+      setPrev(msg)
+      setMessageSignal(msg);
+    } else {
+      setMessageSignal(msg);
     }
-  );
+  }
+
+  useSubscription(
+    interval(1000).subscribe(() => {
+      refreshMessages()
+    })
+  )
 
   createEffect(
     on(channel, () => {
@@ -42,23 +56,19 @@ export function MessageProvider() {
     })
   );
 
-  createEffect(() => {
-    refreshMessages();
-  })
-
   return (
-    <Show when={messagesResource()}>
+    <Show when={messagesSignal()}>
       <Flex
         class="w-full h-full overflow-x gap-2"
         justifyContent="start"
         alignItems="start"
         flexDirection="col"
       >
-        <For each={messagesResource()?.messages}>
+        <For each={messagesSignal()}>
           {(message) => (
             <ContextMenu>
               <ContextMenuTrigger class="w-full">
-                <Card>
+                <Card class="transition animate-content-show">
                   <CardHeader class="flex flex-row items-center gap-2">
                     <Avatar>
                       <AvatarImage src={message.author?.avatarURL} />

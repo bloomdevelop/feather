@@ -32,6 +32,9 @@ importers:
       '@repo/revolt.js':
         specifier: workspace:*
         version: link:../../packages/revolt.js
+      '@solidjs-use/rxjs':
+        specifier: ^2.3.0
+        version: 2.3.0(rxjs@7.8.1)
       '@solidjs/router':
         specifier: ^0.14.1
         version: 0.14.1(solid-js@1.8.18)
@@ -47,6 +50,9 @@ importers:
       revolt.js:
         specifier: ^7.0.3
         version: 7.0.3
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
       solid-icons:
         specifier: ^1.1.0
         version: 1.1.0(solid-js@1.8.18)
@@ -1009,6 +1015,11 @@ packages:
     resolution: {integrity: sha512-CqAwKb2T5Vi72+rhebSsqNZ9o67buYRdEJrIFzRXz3U59QqezuuxPsyzTSVCacwS5Pf109VRsgCJQoxKRoECZQ==}
     peerDependencies:
       solid-js: ^1.6.12
+
+  '@solidjs-use/rxjs@2.3.0':
+    resolution: {integrity: sha512-2xGIl9GhchEO2ckWRGd4+6LrU+f7kjQMU0NDvBtpCVYkmUO4+yy5+LjD+8EaGxSLP8j4hlx8PB0VbxsgwIK6IQ==}
+    peerDependencies:
+      rxjs: '>=6.0.0'
 
   '@solidjs-use/shared@2.3.0':
     resolution: {integrity: sha512-xuPNzZ9fwigkmYXTO+a8kaT45XQCPt6jVlyiDDYCD9NRZheRJOZWiUcVjYHzjececbWTctcY8NFdsXVyxARHKg==}
@@ -4545,6 +4556,10 @@ snapshots:
     dependencies:
       solid-js: 1.8.18
 
+  '@solidjs-use/rxjs@2.3.0(rxjs@7.8.1)':
+    dependencies:
+      rxjs: 7.8.1
+
   '@solidjs-use/shared@2.3.0':
     dependencies:
       '@solidjs-use/solid-to-vue': 2.3.0
@@ -7309,7 +7324,6 @@ snapshots:
   rxjs@7.8.1:
     dependencies:
       tslib: 2.6.3
-    optional: true
 
   sade@1.8.1:
     dependencies:
