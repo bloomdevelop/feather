@@ -51,7 +51,7 @@
     "prettier": "^3.3.3",
     "tsc-watch": "^6.0.4",
     "typed-emitter": "^2.1.0",
-    "typedoc": "^0.25.1",
+    "typedoc": "^0.26.5",
     "typescript": "^5.4.2"
   }
 }
