@@ -9,5 +9,8 @@
     "solidjs",
     "Unreads",
     "virtua"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }
