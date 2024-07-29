@@ -1,7 +1,6 @@
 import { useColorMode } from "@kobalte/core";
 import { TbMoon, TbSun, TbDeviceLaptop } from "solid-icons/tb";
 import { useContext } from "solid-js";
-import { Badge } from "~/components/ui/badge";
 import {
   DropdownMenuTrigger,
   DropdownMenu,
