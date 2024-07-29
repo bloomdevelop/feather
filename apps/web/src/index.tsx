@@ -34,7 +34,6 @@ render(
           <ColorModeProvider storageManager={storageManager}>
             <ServerProvider>
               <ChannelProvider>
-                
                 <Router>
                   <Route path="/" component={baseLayout}>
                     <Route path="/home" component={HomePage} />
