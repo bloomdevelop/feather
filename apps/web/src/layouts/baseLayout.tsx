@@ -1,21 +1,10 @@
-import {
-  For,
-  Match, Suspense,
-  Switch,
-  useContext
-} from "solid-js";
+import { For, Show, Suspense, useContext } from "solid-js";
 import { Flex } from "../components/ui/flex";
 import { AuthContext } from "~/lib/contexts/auth";
 import { RevoltClient } from "~/lib/client";
-import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
-import {
-  TbHome,
-  TbInfoCircle,
-  TbMessage,
-  TbSettings
-} from "solid-icons/tb";
+import { TbHome, TbMessage, TbSettings } from "solid-icons/tb";
 import { Button } from "../components/ui/button";
-import { A, useLocation, useNavigate } from "@solidjs/router";
+import { useLocation, useNavigate } from "@solidjs/router";
 import { Separator } from "~/components/ui/separator";
 import { ServerContext } from "~/lib/contexts/server";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -24,16 +13,20 @@ import { SettingsContext } from "~/lib/contexts/settings";
 import { ChannelContext } from "~/lib/contexts/channel";
 
 export default function baseLayout(props: any) {
-  const authContext = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const { updateServerBasedOnId, id } = useContext(ServerContext);
   const { setId } = useContext(ChannelContext);
   const settingsContext = useContext(SettingsContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(settingsContext?.settings.getAll());
   if (location.pathname === "/") {
     navigate("/home");
+  }
+
+  if (!isLoggedIn()) {
+    const redirect = useNavigate();
+    redirect("/login");
   }
 
   return (
@@ -44,7 +37,11 @@ export default function baseLayout(props: any) {
         flexDirection="row"
       >
         <Flex
-          class="max-w-80 w-full h-full p-2 gap-2"
+          classList={{
+            "max-w-80 h-full p-2 gap-2": true,
+            "w-full": !settingsContext?.settings.appearance.get("compactMode"),
+            "w-max": settingsContext?.settings.appearance.get("compactMode"),
+          }}
           flexDirection="col"
           justifyContent="start"
           alignItems="center"
@@ -54,12 +51,25 @@ export default function baseLayout(props: any) {
               navigate("/home");
               updateServerBasedOnId("");
             }}
-            class="justify-start w-full gap-2"
+            class={
+              settingsContext?.settings.appearance.get("compactMode")
+                ? "flex flex-row items-center w-full h-12 gap-2 justify-center"
+                : "flex flex-row items-center w-full gap-2 justify-start"
+            }
             variant={
               location.pathname.includes("/home") ? "default" : "outline"
             }
           >
-            <TbHome /> Home
+            <TbHome />{" "}
+            <p
+              class={
+                settingsContext?.settings.appearance.get("compactMode")
+                  ? "hidden"
+                  : ""
+              }
+            >
+              Home
+            </p>
           </Button>
           <Button
             onClick={() => {
@@ -67,88 +77,116 @@ export default function baseLayout(props: any) {
               updateServerBasedOnId("");
             }}
             disabled={!RevoltClient.ready()}
-            class="justify-start w-full gap-2"
+            class={
+              settingsContext?.settings.appearance.get("compactMode")
+                ? "flex flex-row items-center w-full h-12 gap-2 justify-center"
+                : "flex flex-row items-center w-full gap-2 justify-start"
+            }
             variant={location.pathname.includes("/dms") ? "default" : "outline"}
           >
-            <TbMessage /> Direct Messages
+            <TbMessage />{" "}
+            <p
+              class={
+                settingsContext?.settings.appearance.get("compactMode")
+                  ? "hidden"
+                  : ""
+              }
+            >
+              Direct Messages
+            </p>
           </Button>
           <Button
             onClick={() => {
               navigate("/settings");
               updateServerBasedOnId("");
             }}
-            class="justify-start w-full gap-2"
+            class={
+              settingsContext?.settings.appearance.get("compactMode")
+                ? "flex flex-row items-center w-full h-12 gap-2 justify-center"
+                : "flex flex-row items-center w-full gap-2 justify-start"
+            }
             variant={
               location.pathname.includes("/settings") ? "default" : "outline"
             }
           >
-            <TbSettings /> Settings
+            <TbSettings />
+            <p
+              class={
+                settingsContext?.settings.appearance.get("compactMode")
+                  ? "hidden"
+                  : ""
+              }
+            >
+              Settings
+            </p>
           </Button>
-          <Switch>
-            <Suspense>
-              <Match when={authContext?.isLoggedIn()}>
-                <Switch fallback={loadingFallback()}>
-                  <Match when={RevoltClient.ready()}>
-                    <div class="flex items-center space-x-4">
-                      <Avatar>
-                        <AvatarImage src={RevoltClient?.user?.avatarURL} />
-                        <AvatarFallback>
-                          {RevoltClient?.user?.username.substring(0, 2)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h3 class="text-lg font-bold">
-                          {RevoltClient?.user?.displayName}
-                        </h3>
-                        <p
-                          class={
-                            settingsContext?.settings.appearance.get(
-                              "compactMode"
-                            )
-                              ? "hidden"
-                              : "visible"
-                          }
-                        >
-                          @{RevoltClient?.user?.username}#
-                          {RevoltClient?.user?.discriminator}
-                        </p>
-                      </div>
-                    </div>
-                    <Separator />
-                    <For each={RevoltClient.servers.toList()}>
-                      {(server) => (
-                        <Button
-                          onClick={() => {
-                            updateServerBasedOnId(server.id);
-                            setId("");
-                            navigate(`/server/${server.id}`);
-                          }}
-                          class="justify-start w-full"
-                          variant={id() === server.id ? "default" : "outline"}
-                        >
-                          {server.name}
-                        </Button>
-                      )}
-                    </For>
-                  </Match>
-                </Switch>
-              </Match>
-            </Suspense>
-            <Match when={!authContext?.isLoggedIn()}>
-              <Alert>
-                <TbInfoCircle />
-                <AlertTitle>Login Needed</AlertTitle>
-                <AlertDescription>
-                  You need to be logged in to see your servers.
-                </AlertDescription>
-                <A href="/login">
-                  <Button class="mt-2" size="sm">
-                    Login
+          <Suspense fallback={loadingFallback()}>
+            <Show when={RevoltClient.ready()}>
+              <div class="flex items-center space-x-4">
+                <Avatar>
+                  <AvatarImage src={RevoltClient?.user?.avatarURL} />
+                  <AvatarFallback>
+                    {RevoltClient?.user?.username.substring(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                <div
+                  class={
+                    settingsContext?.settings.appearance.get("compactMode")
+                      ? "hidden"
+                      : ""
+                  }
+                >
+                  <h3 class="text-lg font-bold">
+                    {RevoltClient?.user?.displayName}
+                  </h3>
+                  <p
+                    class={
+                      settingsContext?.settings.appearance.get("compactMode")
+                        ? "hidden"
+                        : ""
+                    }
+                  >
+                    @{RevoltClient?.user?.username}#
+                    {RevoltClient?.user?.discriminator}
+                  </p>
+                </div>
+              </div>
+              <Separator />
+              <For each={RevoltClient.servers.toList()}>
+                {(server) => (
+                  <Button
+                    onClick={() => {
+                      updateServerBasedOnId(server.id);
+                      setId("");
+                      navigate(`/server/${server.id}`);
+                    }}
+                    class={
+                      settingsContext?.settings.appearance.get("compactMode")
+                        ? "flex justify-center items-center gap-2 w-full h-12"
+                        : "flex justify-start items-center gap-2 w-full"
+                    }
+                    variant={id() === server.id ? "default" : "outline"}
+                  >
+                    <Avatar class="w-6 h-6 justify-center items-center">
+                      <AvatarImage src={server.iconURL} />
+                      <AvatarFallback>
+                        {server.name.substring(0, 2)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p
+                      class={
+                        settingsContext?.settings.appearance.get("compactMode")
+                          ? "hidden"
+                          : ""
+                      }
+                    >
+                      {server.name}
+                    </p>
                   </Button>
-                </A>
-              </Alert>
-            </Match>
-          </Switch>
+                )}
+              </For>
+            </Show>
+          </Suspense>
         </Flex>
         <Separator orientation="vertical" />
         <div class="w-full h-full">{props.children}</div>
