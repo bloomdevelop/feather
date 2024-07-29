@@ -7,7 +7,6 @@ import { Flex } from "~/components/ui/flex";
 import { ChannelContext } from "~/lib/contexts/channel";
 import { ServerContext } from "~/lib/contexts/server";
 import { AuthContext } from "~/lib/contexts/auth";
-import { useNavigate } from "@solidjs/router";
 import { MessageProvider } from "~/components/messaging/MessageProvider";
 import {
   Popover,
@@ -26,11 +25,6 @@ export default function serverPage() {
   const { server } = useContext(ServerContext);
   const { channel } = useContext(ChannelContext);
   const { isLoggedIn } = useContext(AuthContext);
-
-  if (!isLoggedIn()) {
-    const redirect = useNavigate();
-    redirect("/login");
-  }
 
   return (
     <Suspense>
