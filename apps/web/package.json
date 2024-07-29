@@ -11,6 +11,7 @@
   "dependencies": {
     "@corvu/drawer": "^0.2.2",
     "@corvu/resizable": "^0.2.3",
+    "@google/generative-ai": "^0.16.0",
     "@kobalte/core": "^0.13.3",
     "@repo/revolt.js": "workspace:*",
     "@solidjs-use/rxjs": "^2.3.0",
