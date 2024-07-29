@@ -8,7 +8,12 @@ import { Flex } from "../components/ui/flex";
 import { AuthContext } from "~/lib/contexts/auth";
 import { RevoltClient } from "~/lib/client";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
-import { TbHome, TbInfoCircle, TbMessage, TbSettings } from "solid-icons/tb";
+import {
+  TbHome,
+  TbInfoCircle,
+  TbMessage,
+  TbSettings
+} from "solid-icons/tb";
 import { Button } from "../components/ui/button";
 import { A, useLocation, useNavigate } from "@solidjs/router";
 import { Separator } from "~/components/ui/separator";
@@ -95,7 +100,15 @@ export default function baseLayout(props: any) {
                         <h3 class="text-lg font-bold">
                           {RevoltClient?.user?.displayName}
                         </h3>
-                        <p>
+                        <p
+                          class={
+                            settingsContext?.settings.appearance.get(
+                              "compactMode"
+                            )
+                              ? "hidden"
+                              : "visible"
+                          }
+                        >
                           @{RevoltClient?.user?.username}#
                           {RevoltClient?.user?.discriminator}
                         </p>

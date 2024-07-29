@@ -1,6 +1,5 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
-
 import {
   ColorModeProvider,
   ColorModeScript,
@@ -33,23 +32,24 @@ render(
         <AuthProvider>
           <ColorModeScript storageType={storageManager.type} />
           <ColorModeProvider storageManager={storageManager}>
-              <ServerProvider>
-                <ChannelProvider>
-                  <Router>
-                    <Route path="/" component={baseLayout}>
-                      <Route path="/home" component={HomePage} />
-                      <Route path="dms" component={dmsPage} />
-                      <Route path="/server" component={serverLayout}>
-                        <Route path="/:id" component={serverPage} />
-                      </Route>
-                      <Route path="/settings" component={settingsPage} />
-                      <Route path="*" component={NotFound} />
+            <ServerProvider>
+              <ChannelProvider>
+                
+                <Router>
+                  <Route path="/" component={baseLayout}>
+                    <Route path="/home" component={HomePage} />
+                    <Route path="dms" component={dmsPage} />
+                    <Route path="/server" component={serverLayout}>
+                      <Route path="/:id" component={serverPage} />
                     </Route>
-                    <Route path="/login" component={LoginPage} />
-                  </Router>
-                </ChannelProvider>
-              </ServerProvider>
-              <Toaster />
+                    <Route path="/settings" component={settingsPage} />
+                    <Route path="*" component={NotFound} />
+                  </Route>
+                  <Route path="/login" component={LoginPage} />
+                </Router>
+              </ChannelProvider>
+            </ServerProvider>
+            <Toaster />
           </ColorModeProvider>
         </AuthProvider>
       </SettingsProvider>
