@@ -2,13 +2,49 @@ import { Dialog } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { TbLogout } from "solid-icons/tb";
 import { AlertTitle } from "~/components/ui/alert";
-import { DialogTrigger, DialogContent, DialogHeader, DialogFooter } from "~/components/ui/dialog";
+import {
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+} from "~/components/ui/dialog";
 import { RevoltClient } from "~/lib/client";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Label } from "~/components/ui/label";
+import { Flex } from "~/components/ui/flex";
+import { onMount, useContext } from "solid-js";
+import { AuthContext } from "~/lib/contexts/auth";
+import { createSignal } from "solid-js";
 
 export default function AccountPage() {
+  const [email, setEmail] = createSignal("");
+
+  const { isLoggedIn } = useContext(AuthContext);
+  onMount(async () => {
+    if (isLoggedIn()) {
+      const res = RevoltClient.account.fetchEmail();
+      setEmail(await res);
+    }
+  });
+
   return (
     <>
-      <h1 class="font-bold text-2xl">Work in Progress</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Your Accounts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Flex
+            flexDirection="row"
+            justifyContent="start"
+            alignItems="center"
+            class="gap-2"
+          >
+            <Label>Email</Label>
+            <p>{email() || "Not logged in"}</p>
+          </Flex>
+        </CardContent>
+      </Card>
       <Dialog>
         <DialogTrigger
           as={Button<"button">}

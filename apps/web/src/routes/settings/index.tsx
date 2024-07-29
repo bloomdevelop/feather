@@ -1,8 +1,7 @@
 import { Flex } from "~/components/ui/flex";
 import {
   TbCode, TbFlask,
-  TbInfoCircle, TbPaint, TbSettings,
-  TbSparkles, TbUserCog
+  TbInfoCircle, TbPaint, TbSettings, TbUserCog
 } from "solid-icons/tb";
 import { SettingsContext } from "~/lib/contexts/settings";
 import { Show, useContext } from "solid-js";
@@ -11,7 +10,6 @@ import AccountPage from "./pages/account";
 import GeneralPage from "./pages/general";
 import AppearancePage from "./pages/appearance";
 import ExperimentsPage from "./pages/experiments";
-import AiPage from "./pages/ai";
 import AboutPage from "./pages/about";
 import DebugPage from "./pages/debug";
 
@@ -39,11 +37,6 @@ export default function settingsPage() {
           <TabsTrigger class="flex flex-row gap-2" value={"experiments"}>
             <TbFlask /> Experiments
           </TabsTrigger>
-          <Show when={settingsContext?.settings.experiments.get("ai")}>
-            <TabsTrigger class="flex flex-row gap-2" value={"ai"}>
-              <TbSparkles /> AI
-            </TabsTrigger>
-          </Show>
           <Show when={settingsContext?.settings.general.get("debugMode")}>
             <TabsTrigger class="flex flex-row gap-2" value={"debug"}>
               <TbCode /> Developer
@@ -64,9 +57,6 @@ export default function settingsPage() {
         </TabsContent>
         <TabsContent class="flex flex-col gap-4" value={"experiments"}>
           <ExperimentsPage />
-        </TabsContent>
-        <TabsContent class="flex flex-col gap-4" value={"ai"}>
-          <AiPage />
         </TabsContent>
         <TabsContent class="flex flex-col gap-4" value={"debug"}>
           <DebugPage />

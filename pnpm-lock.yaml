@@ -26,9 +26,6 @@ importers:
       '@corvu/resizable':
         specifier: ^0.2.3
         version: 0.2.3(solid-js@1.8.19)
-      '@google/generative-ai':
-        specifier: ^0.16.0
-        version: 0.16.0
       '@kobalte/core':
         specifier: ^0.13.3
         version: 0.13.4(solid-js@1.8.19)
@@ -647,10 +644,6 @@ packages:
 
   '@fontsource-variable/inter@5.0.19':
     resolution: {integrity: sha512-V5KPpF5o0sI1uNWAdFArC87NDOb/ZJDPXLomEiKmDCYMlDUCTn2flkuAZkyME2rtGOKO7vzCuDJAND0m/5PhDA==}
-
-  '@google/generative-ai@0.16.0':
-    resolution: {integrity: sha512-doB5ZNxS6m+jUZqaLCeYXfBZCdq6Ho0ibkq5/17xe1qAUZpCLWlvCDGtqFPqqO+yezNmvGatS0KhV22yiOT3DA==}
-    engines: {node: '>=18.0.0'}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -4189,8 +4182,6 @@ snapshots:
   '@floating-ui/utils@0.2.5': {}
 
   '@fontsource-variable/inter@5.0.19': {}
-
-  '@google/generative-ai@0.16.0': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:

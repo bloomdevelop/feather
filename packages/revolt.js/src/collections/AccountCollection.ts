@@ -23,7 +23,10 @@ export class AccountCollection {
    */
   fetchEmail() {
     return this.client.api
-      .get("/auth/account/")
+      .get("/auth/account/", undefined, {
+        headers: {
+        "X-Session-Token": `${this.client.sessionToken}`
+      }})
       .then((account) => account.email);
   }
 
