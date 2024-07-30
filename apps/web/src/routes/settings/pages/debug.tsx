@@ -1,19 +1,13 @@
-import { TbFilePlus, TbPhoto, TbMusic, TbFile, TbSparkles, TbAlertTriangle, TbSend } from "solid-icons/tb";
-import { Show, useContext } from "solid-js";
-import { AlertTitle, AlertDescription } from "~/components/ui/alert";
+import { TbFilePlus, TbPhoto, TbMusic, TbFile, TbSend } from "solid-icons/tb";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuGroupLabel, DropdownMenuItem } from "~/components/ui/dropdown-menu";
-import { Sheet, SheetTrigger, SheetContent, SheetFooter } from "~/components/ui/sheet";
 import { TextField, TextFieldInput } from "~/components/ui/text-field";
 import { TooltipTrigger, TooltipContent } from "~/components/ui/tooltip";
 import { RevoltClient } from "~/lib/client";
 import { Separator } from "~/components/ui/separator";
 import { Tooltip } from "~/components/ui/tooltip";
 import { Button } from "~/components/ui/button";
-import { Alert } from "~/components/ui/alert";
-import { SettingsContext } from "~/lib/contexts/settings";
 
 export default function DebugPage() {
-  const settingsContext = useContext(SettingsContext)
   return (
     <>
       <h1 class="font-bold text-2xl">Components</h1>
@@ -51,55 +45,6 @@ export default function DebugPage() {
           placeholder="Type an message"
           autocomplete="none"
         />
-
-        <Show when={settingsContext?.settings.experiments.get("ai")}>
-          <Sheet>
-            <SheetTrigger
-              disabled={
-                settingsContext?.settings.experiments.get("aiAPIKey") === ""
-              }
-            >
-              <Tooltip>
-                <TooltipTrigger
-                  as={Button<"button">}
-                  variant="outline"
-                  disabled={
-                    settingsContext?.settings.experiments.get("aiAPIKey") === ""
-                  }
-                >
-                  <TbSparkles />
-                </TooltipTrigger>
-                <TooltipContent>Summarize</TooltipContent>
-              </Tooltip>
-            </SheetTrigger>
-            <SheetContent title="Summarize" position="right">
-              <div class="flex flex-col justify-between w-full h-full pb-6">
-                <Alert>
-                  <TbAlertTriangle />
-                  <AlertTitle>Coming Soon...</AlertTitle>
-                  <AlertDescription>
-                    This feature is not complete and will be added soon.
-                  </AlertDescription>
-                </Alert>
-
-                <SheetFooter>
-                  <TextField class="flex w-full items-center gap-2">
-                    <TextFieldInput
-                      type="text"
-                      placeholder="Type an prompt to fix the issue."
-                    />
-                    <Tooltip>
-                      <TooltipTrigger as={Button<"button">}>
-                        <TbSend />
-                      </TooltipTrigger>
-                      <TooltipContent>Send</TooltipContent>
-                    </Tooltip>
-                  </TextField>
-                </SheetFooter>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </Show>
 
         <Tooltip>
           <TooltipTrigger as={Button<"button">} variant="outline">
