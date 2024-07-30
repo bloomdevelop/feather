@@ -37,6 +37,7 @@ import {
 import { showToast } from "~/components/ui/toast.tsx";
 import { Badge } from "~/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
+import SpinnerFallback from "~/components/fallback/spinnerFallback";
 
 export default function serverLayout(props: any) {
   const { server } = useContext(ServerContext);
@@ -65,28 +66,7 @@ export default function serverLayout(props: any) {
   return (
     <Suspense
       fallback={
-        <div class="w-full h-full flex justify-center items-center text-4xl font-bold">
-          <svg class="h-24 w-24 animate-spin" viewBox="0 0 100 100">
-            <circle
-              fill="none"
-              stroke-width="10"
-              class="stroke-muted"
-              cx="50"
-              cy="50"
-              r="40"
-            />
-            <circle
-              fill="none"
-              stroke-width="10"
-              class="stroke-muted-foreground"
-              stroke-dasharray="250"
-              stroke-dashoffset="210"
-              cx="50"
-              cy="50"
-              r="40"
-            />
-          </svg>
-        </div>
+        <SpinnerFallback size={24}/>
       }
     >
       <Flex justifyContent="start" flexDirection="row" class="w-full h-full">
@@ -117,7 +97,7 @@ export default function serverLayout(props: any) {
                 <Sheet>
                   <SheetTrigger>
                     <Tooltip>
-                      <TooltipTrigger as={Button<"button">} variant="outline">
+                      <TooltipTrigger as={Button<"button">} size="icon" variant="outline">
                         <TbUsersGroup />
                       </TooltipTrigger>
                       <TooltipContent>Members List</TooltipContent>
