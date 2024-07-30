@@ -27,6 +27,14 @@ export default function AboutPage() {
         <h1 class="text-xl font-bold">@corvu/drawer</h1>
         <p>By corvudev</p>
       </Flex>
+      <Flex justifyContent="start" alignItems="center" class="gap-2">
+        <h1 class="text-xl font-bold">solidjs-use</h1>
+        <p>By solidjs-use</p>
+      </Flex>
+      <Flex justifyContent="start" alignItems="center" class="gap-2">
+        <h1 class="text-xl font-bold">@solidjs-use/rxjs</h1>
+        <p>By solidjs-use</p>
+      </Flex>
     </>
   );
 }
