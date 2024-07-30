@@ -120,9 +120,7 @@ export default function serverLayout(props: any) {
                       <TooltipTrigger as={Button<"button">} variant="outline">
                         <TbUsersGroup />
                       </TooltipTrigger>
-                      <TooltipContent>
-                        Members List
-                      </TooltipContent>
+                      <TooltipContent>Members List</TooltipContent>
                     </Tooltip>
                   </SheetTrigger>
                   <SheetContent
@@ -188,7 +186,7 @@ export default function serverLayout(props: any) {
                                   id() === channel.id ? "default" : "outline"
                                 }
                               >
-                                <Show when={channel.iconURL}>
+                                <Show when={channel.iconURL && !channel.mature}>
                                   <img
                                     width={24}
                                     height={24}
@@ -196,7 +194,22 @@ export default function serverLayout(props: any) {
                                     alt={channel.name}
                                   />
                                 </Show>
-                                <Show when={channel.iconURL == undefined}>
+                                <Show when={channel.iconURL && channel.mature}>
+                                  <div class="relative">
+                                    <img
+                                      width={24}
+                                      height={24}
+                                      src={channel.iconURL}
+                                      alt={channel.name}
+                                    />
+                                    <span class="absolute bg-background rounded-full bottom-0 right-0">
+                                      <TbAlertCircle size={14} />
+                                    </span>
+                                  </div>
+                                </Show>
+                                <Show
+                                  when={!channel.iconURL && !channel.mature}
+                                >
                                   <Switch>
                                     <Match
                                       when={channel.type === "TextChannel"}
@@ -207,6 +220,30 @@ export default function serverLayout(props: any) {
                                       when={channel.type === "VoiceChannel"}
                                     >
                                       <TbDeviceSpeaker size={24} />
+                                    </Match>
+                                  </Switch>
+                                </Show>
+                                <Show when={!channel.iconURL && channel.mature}>
+                                  <Switch>
+                                    <Match
+                                      when={channel.type === "TextChannel"}
+                                    >
+                                      <div class="relative">
+                                        <TbMessage2 size={24} />
+                                        <span class="absolute bg-background rounded-full bottom-0 right-0">
+                                          <TbAlertCircle size={14} />
+                                        </span>
+                                      </div>
+                                    </Match>
+                                    <Match
+                                      when={channel.type === "VoiceChannel"}
+                                    >
+                                      <div class="relative">
+                                        <TbMessage2 size={24} />
+                                        <span class="absolute bg-background rounded-full bottom-0 right-0">
+                                          <TbDeviceSpeaker size={14} />
+                                        </span>
+                                      </div>
                                     </Match>
                                   </Switch>
                                 </Show>

@@ -169,7 +169,7 @@ export default function baseLayout(props: any) {
                   >
                     <Avatar class="w-6 h-6 justify-center items-center">
                       <AvatarImage src={server.iconURL} />
-                      <AvatarFallback>
+                      <AvatarFallback class="text-foreground">
                         {server.name.substring(0, 2)}
                       </AvatarFallback>
                     </Avatar>

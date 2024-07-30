@@ -41,7 +41,7 @@ export default function AccountPage() {
             class="gap-2"
           >
             <Label>Email</Label>
-            <p>{email() || "Not logged in"}</p>
+            <p>{email() || "Loading..."}</p>
           </Flex>
         </CardContent>
       </Card>
