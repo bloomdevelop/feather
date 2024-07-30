@@ -51,9 +51,10 @@ export default function baseLayout(props: any) {
               navigate("/home");
               updateServerBasedOnId("");
             }}
+            size={settingsContext?.settings.appearance.get("compactMode") ? "icon" : "default"}
             class={
               settingsContext?.settings.appearance.get("compactMode")
-                ? "flex flex-row items-center w-full h-12 gap-2 justify-center"
+                ? "flex flex-row items-center w-full h-10 gap-2 justify-center"
                 : "flex flex-row items-center w-full gap-2 justify-start"
             }
             variant={
@@ -77,9 +78,14 @@ export default function baseLayout(props: any) {
               updateServerBasedOnId("");
             }}
             disabled={!RevoltClient.ready()}
+            size={
+              settingsContext?.settings.appearance.get("compactMode")
+                ? "icon"
+                : "default"
+            }
             class={
               settingsContext?.settings.appearance.get("compactMode")
-                ? "flex flex-row items-center w-full h-12 gap-2 justify-center"
+                ? "flex flex-row items-center w-full h-10 gap-2 justify-center"
                 : "flex flex-row items-center w-full gap-2 justify-start"
             }
             variant={location.pathname.includes("/dms") ? "default" : "outline"}
@@ -100,9 +106,14 @@ export default function baseLayout(props: any) {
               navigate("/settings");
               updateServerBasedOnId("");
             }}
+            size={
+              settingsContext?.settings.appearance.get("compactMode")
+                ? "icon"
+                : "default"
+            }
             class={
               settingsContext?.settings.appearance.get("compactMode")
-                ? "flex flex-row items-center w-full h-12 gap-2 justify-center"
+                ? "flex flex-row items-center w-full h-10 gap-2 justify-center"
                 : "flex flex-row items-center w-full gap-2 justify-start"
             }
             variant={
@@ -160,9 +171,14 @@ export default function baseLayout(props: any) {
                       setId("");
                       navigate(`/server/${server.id}`);
                     }}
+                    size={
+                      settingsContext?.settings.appearance.get("compactMode")
+                        ? "icon"
+                        : "default"
+                    }
                     class={
                       settingsContext?.settings.appearance.get("compactMode")
-                        ? "flex justify-center items-center gap-2 w-full h-12"
+                        ? "flex justify-center items-center gap-2 w-full h-10"
                         : "flex justify-start items-center gap-2 w-full"
                     }
                     variant={id() === server.id ? "default" : "outline"}
