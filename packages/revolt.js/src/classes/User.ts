@@ -310,7 +310,11 @@ export class User {
   async fetchProfile() {
     return new UserProfile(
       this.#collection.client,
-      await this.#collection.client.api.get(`/users/${this.id as ""}/profile`)
+      await this.#collection.client.api.get(`/users/${this.id as ""}/profile`, undefined, {
+        headers: {
+          "X-Session-Token": `${this.#collection.client.sessionToken}`
+        }
+      })
     );
   }
 
