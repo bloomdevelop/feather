@@ -1,10 +1,11 @@
 import { Flex } from "~/components/ui/flex";
 
 export default function AboutPage() {
+  const version = APP_VERSION;
   return (
     <>
       <h1 class="text-4xl font-bold">Feather</h1>
-      <h3 class="text-2xl">Version: 0.2.0</h3>
+      <h3 class="text-2xl">Version: {version}</h3>
       <h1 class="text-3xl font-bold">Acknowledgements</h1>
       <p>This client wouldn't be possible without these libraries:</p>
       <Flex justifyContent="start" alignItems="center" class="gap-2">
