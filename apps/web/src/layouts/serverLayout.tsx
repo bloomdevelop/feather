@@ -64,11 +64,7 @@ export default function serverLayout(props: any) {
   );
 
   return (
-    <Suspense
-      fallback={
-        <SpinnerFallback size={24}/>
-      }
-    >
+    <Suspense fallback={<SpinnerFallback size={150} strokeSize={12} />}>
       <Flex justifyContent="start" flexDirection="row" class="w-full h-full">
         <Flex
           class="max-w-72 w-full h-full gap-2 p-2 overflow-auto"
@@ -97,7 +93,11 @@ export default function serverLayout(props: any) {
                 <Sheet>
                   <SheetTrigger>
                     <Tooltip>
-                      <TooltipTrigger as={Button<"button">} size="icon" variant="outline">
+                      <TooltipTrigger
+                        as={Button<"button">}
+                        size="icon"
+                        variant="outline"
+                      >
                         <TbUsersGroup />
                       </TooltipTrigger>
                       <TooltipContent>Members List</TooltipContent>

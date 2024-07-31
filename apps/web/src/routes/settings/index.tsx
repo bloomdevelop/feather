@@ -21,33 +21,35 @@ export default function settingsPage() {
       flexDirection="col"
       justifyContent="start"
       alignItems="start"
-      class="p-4 gap-2"
+      class="p-4 gap-2 w-full h-full overflow-y-scroll"
     >
       <Tabs class="w-full" defaultValue={"account"}>
-        <TabsList>
-          <TabsTrigger class="flex flex-row gap-2" value={"account"}>
-            <TbUserCog /> Account
-          </TabsTrigger>
-          <TabsTrigger class="flex flex-row gap-2" value={"general"}>
-            <TbSettings /> General
-          </TabsTrigger>
-          <TabsTrigger class="flex flex-row gap-2" value={"appearance"}>
-            <TbPaint /> Appearance
-          </TabsTrigger>
-          <TabsTrigger class="flex flex-row gap-2" value={"experiments"}>
-            <TbFlask /> Experiments
-          </TabsTrigger>
-          <Show when={settingsContext?.settings.general.get("debugMode")}>
-            <TabsTrigger class="flex flex-row gap-2" value={"debug"}>
-              <TbCode /> Developer
+        <div class="flex flex-row justify-center items-center z-10 w-full sticky top-0">
+          <TabsList class="shadow-md">
+            <TabsTrigger class="flex flex-row gap-2" value={"account"}>
+              <TbUserCog /> Account
             </TabsTrigger>
-          </Show>
-          <TabsTrigger class="flex flex-row gap-2" value={"about"}>
-            <TbInfoCircle /> About
-          </TabsTrigger>
-        </TabsList>
+            <TabsTrigger class="flex flex-row gap-2" value={"general"}>
+              <TbSettings /> General
+            </TabsTrigger>
+            <TabsTrigger class="flex flex-row gap-2" value={"appearance"}>
+              <TbPaint /> Appearance
+            </TabsTrigger>
+            <TabsTrigger class="flex flex-row gap-2" value={"experiments"}>
+              <TbFlask /> Experiments
+            </TabsTrigger>
+            <Show when={settingsContext?.settings.general.get("debugMode")}>
+              <TabsTrigger class="flex flex-row gap-2" value={"debug"}>
+                <TbCode /> Developer
+              </TabsTrigger>
+            </Show>
+            <TabsTrigger class="flex flex-row gap-2" value={"about"}>
+              <TbInfoCircle /> About
+            </TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent class="flex flex-col gap-4" value={"account"}>
-          <AccountPage/>
+          <AccountPage />
         </TabsContent>
         <TabsContent class="flex flex-col gap-4" value={"general"}>
           <GeneralPage />

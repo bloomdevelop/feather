@@ -2,8 +2,10 @@ import {
   createEffect,
   createSignal,
   For,
+  Match,
   on,
   Show,
+  Switch,
   useContext,
 } from "solid-js";
 import { ChannelContext } from "../../lib/contexts/channel";
@@ -17,13 +19,15 @@ import {
   ContextMenuItem,
 } from "~/components/ui/context-menu";
 import { TbMessage2Share } from "solid-icons/tb";
-import { SolidMarkdown } from "solid-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useSubscription } from "@solidjs-use/rxjs";
 import { interval } from "rxjs";
 import { Col, Grid } from "../ui/grid";
 import { Message } from "@repo/revolt.js";
 import { RevoltClient } from "~/lib/client";
+import { Markdown } from "../markdown";
+import { Separator } from "../ui/separator";
+import SpinnerFallback from "../fallback/spinnerFallback";
 
 export function MessageProvider() {
   const { channel } = useContext(ChannelContext);
@@ -63,71 +67,148 @@ export function MessageProvider() {
   );
 
   return (
-    <Show when={messagesSignal()}>
-      <Flex
-        class="w-full h-full overflow-x gap-2"
-        justifyContent="start"
-        alignItems="start"
-        flexDirection="col"
-      >
+    <Show when={messagesSignal()} fallback={<SpinnerFallback size={54} />}>
+      <div class="flex flex-col w-full h-full overflow-x gap-2">
         <For each={messagesSignal()}>
           {(message) => (
-            <ContextMenu>
-              <ContextMenuTrigger class="w-full">
-                <Card class="transition animate-content-show">
-                  <CardHeader class="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage
-                        src={
-                          message.author?.avatarURL ||
-                          message.masquerade?.name ||
-                          RevoltClient.user?.defaultAvatarURL
-                        }
-                      />
-                      <AvatarFallback>
-                        {message.author?.username.substring(0, 2) ||
-                          message.author?.displayName.substring(0, 2) ||
-                          message.masquerade?.name?.substring(0, 2)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <CardTitle>
-                      {message.author?.displayName ||
-                        message.author?.username ||
-                        message.masquerade?.name ||
-                        "Unknown"}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <SolidMarkdown
-                      class="prose prose-neutral dark:prose-invert"
-                      children={message.content}
-                    />
-                    <Show when={message.attachments}>
-                      <Grid colsLg={4} cols={2}>
-                        <For each={message.attachments}>
-                          {(attachment) => (
-                            <Col>
-                              <img
-                                alt={attachment.filename}
-                                src={attachment.createFileURL()}
-                              />
-                            </Col>
-                          )}
-                        </For>
-                      </Grid>
-                    </Show>
-                  </CardContent>
-                </Card>
-              </ContextMenuTrigger>
-              <ContextMenuContent>
-                <ContextMenuItem class="flex flex-row items-center gap-2">
-                  <TbMessage2Share /> Reply
-                </ContextMenuItem>
-              </ContextMenuContent>
-            </ContextMenu>
+            <>
+              <Show when={!message.systemMessage}>
+                <ContextMenu>
+                  <ContextMenuTrigger class="w-full">
+                    <Card class="transition animate-content-show">
+                      <CardHeader class="flex flex-row items-center gap-2">
+                        <Avatar>
+                          <AvatarImage
+                            src={
+                              message.author?.avatarURL ||
+                              message.masquerade?.name ||
+                              RevoltClient.user?.defaultAvatarURL
+                            }
+                          />
+                          <AvatarFallback>
+                            {message.author?.username.substring(0, 2) ||
+                              message.author?.displayName.substring(0, 2) ||
+                              message.masquerade?.name?.substring(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <CardTitle>
+                          {message.author?.displayName ||
+                            message.author?.username ||
+                            message.masquerade?.name ||
+                            "Unknown"}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <Markdown content={message.content} />
+                        <Show when={message.attachments}>
+                          <Grid cols={2} class="gap-2">
+                            <For each={message.attachments}>
+                              {(attachment) => (
+                                <Col>
+                                  <img
+                                    class="w-full h-full rounded-md"
+                                    alt={attachment.filename}
+                                    src={attachment.createFileURL()}
+                                  />
+                                </Col>
+                              )}
+                            </For>
+                          </Grid>
+                        </Show>
+                      </CardContent>
+                    </Card>
+                  </ContextMenuTrigger>
+                  <ContextMenuContent>
+                    <ContextMenuItem class="flex flex-row items-center gap-2">
+                      <TbMessage2Share /> Reply
+                    </ContextMenuItem>
+                  </ContextMenuContent>
+                </ContextMenu>
+              </Show>
+              <Show when={message.systemMessage}>
+                <Switch>
+                  <Match when={message.systemMessage?.type === "user_joined"}>
+                    <Flex
+                      class="w-full"
+                      flexDirection="row"
+                      justifyContent="between"
+                      alignItems="center"
+                    >
+                      <div class="relative w-full">
+                        <div class="absolute inset-0 flex items-center">
+                          <span class="w-full border-t" />
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                          <span class="bg-background px-2 text-muted-foreground">
+                            User joined
+                          </span>
+                        </div>
+                      </div>
+                    </Flex>
+                  </Match>
+                  <Match when={message.systemMessage?.type === "user_left"}>
+                    <Flex
+                      class="w-full"
+                      flexDirection="row"
+                      justifyContent="between"
+                      alignItems="center"
+                    >
+                      <div class="relative w-full">
+                        <div class="absolute inset-0 flex items-center">
+                          <span class="w-full border-t" />
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                          <span class="bg-background px-2 text-muted-foreground">
+                            User has left
+                          </span>
+                        </div>
+                      </div>
+                    </Flex>
+                  </Match>
+                  <Match when={message.systemMessage?.type === "user_kicked"}>
+                    <Flex
+                      class="w-full"
+                      flexDirection="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <div class="relative w-full">
+                        <div class="absolute inset-0 flex items-center">
+                          <span class="w-full border-t" />
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                          <span class="bg-background px-2 text-muted-foreground">
+                            User has been kicked
+                          </span>
+                        </div>
+                      </div>
+                    </Flex>
+                  </Match>
+                  <Match when={message.systemMessage?.type === "user_remove"}>
+                    <Flex
+                      class="w-full"
+                      flexDirection="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <div class="relative w-full">
+                        <div class="absolute inset-0 flex items-center">
+                          <span class="w-full border-t" />
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                          <span class="bg-background px-2 text-muted-foreground">
+                            User has been removed
+                          </span>
+                        </div>
+                      </div>
+                    </Flex>
+                  </Match>
+                </Switch>
+              </Show>
+            </>
           )}
         </For>
-      </Flex>
+      </div>
     </Show>
   );
 }

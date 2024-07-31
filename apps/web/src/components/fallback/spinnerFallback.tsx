@@ -8,13 +8,14 @@ export type SpinnerFallbackProps = {
 export default function SpinnerFallback(props: SpinnerFallbackProps) {
   const [, rest] = splitProps(props, ["size"]);
   return (
-    <div
-      {...rest}
-      class="w-full h-full flex justify-center items-center text-4xl font-bold"
-    >
+    <div class="w-full h-full flex justify-center items-center">
       <svg
         {...rest}
-        class={`h-${props.size} w-${props.size} animate-spin`}
+        style={{
+          width: `${props.size}px`,
+          height: `${props.size}px`,
+        }}
+        class={"animate-spin"}
         viewBox="0 0 100 100"
       >
         <circle
